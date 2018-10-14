@@ -8,21 +8,9 @@ double f(double x,double y,double t){
 double g(double x,double y,double t){
         return x+2*y-sin(t)-2*t*t+2*t-1;
 }
-double K1x(double x,double y,double t){
-        return f(x,y,t);
-}
-double K2x(double x, double y,double t,double h){
-        return f(x+h/2*K1x(x,y,t),y+h/2*K1x(x,y,t),t);
-}
-double K1y(double x,double y,double t){
-        return g(x,y,t);
-}
-double K2y(double x, double y,double t,double h){
-        return g(x+h/2*K1y(x,y,t),y+h/2*K1y(x,y,t),t);
-}
 int main(int argc, char* argv[])
 {
-double Ho = 0.2, h = 0.1,eps = 0.01,tempXi,tempYi,tempXc,tempYc,k=2;
+double Ho = 0.1, h = 0.1,eps = 0.01,tempXi,tempYi,tempXc,tempYc,k=2;
 double x[1000],y[1000],t[1000]; int n,i;
 x[0] = 1;y[0] = 0;t[0]=0;
         do{
@@ -40,31 +28,28 @@ x[0] = 1;y[0] = 0;t[0]=0;
         x[1] = tempXi;
         y[1] = tempYi;
         cout<<"Krok = "<<Ho<<endl;
-        for (i = 0; i < n; i++)
-                t[i+1] = t[i] + Ho;
-
-        x[1] = x[0] + Ho*K2x(x[0],y[0],t[0],Ho);      //ZNAISHLI X1,Y1
-        y[1] = y[0] + Ho*K2y(x[0],y[0],t[0],Ho);
-        cout<<"\tx[0] = "<<x[0]<<"            ";
-        cout<<"y[0] = "<<y[0]<<endl;
-        cout<<"\tx[1] = "<<x[1]<<"            ";
-        cout<<"y[1] = "<<y[1]<<endl;
+        t[1] = Ho;
+        x[1] = x[0] + Ho*f( x[0]+Ho/2*f(x[0],y[0],t[0]) , y[0]+Ho/2*f(x[0],y[0],t[0]) , t[0]+Ho/2);      //ZNAISHLI X1,Y1
+        y[1] = y[0] + Ho*g( x[0]+Ho/2*g(x[0],y[0],t[0]) , y[0]+Ho/2*g(x[0],y[0],t[0]) , t[0]+Ho/2);
+        cout<<"\tx[0] = "<<x[0]<<"\t\t\t\tX tochne = "<<sin(t[0])+1<<"\t\t\t\t";
+        cout<<"y[0] = "<<y[0]<<"\t\t\t\tY tochne = "<<t[0]*t[0]<<endl;
+        cout<<"\tx[1] = "<<x[1]<<"\t\t\t\tX tochne = "<<sin(t[1])+1<<"\t\t\t\t";
+        cout<<"y[1] = "<<y[1]<<"\t\t\t\tY tochne = "<<t[1]*t[1]<<endl;
         n = (int)1/Ho;
-        for(i = 0 ;i < n-2;i++)
+        for(i = 0 ;i < n-1;i++)
         {
                 x[i+2] = x[i+1];
                 y[i+2] = y[i+1];
                 do{
+                		t[i+2] = (i+2)*Ho;
                         tempXi = x[i+2];
                         tempYi = y[i+2];
                         x[i+2] = x[i+1] + Ho/12*(5*f(tempXi,tempYi,t[i+2]) + 8*f(x[i+1],y[i+1],t[i+1]) - f(x[i+0],y[i+0],t[i+0]));
                         y[i+2] = y[i+1] + Ho/12*(5*g(tempXi,tempYi,t[i+2]) + 8*g(x[i+1],y[i+1],t[i+1]) - g(x[i+0],y[i+0],t[i+0]));
                 }while  (fabs(tempXi-x[i+2])+fabs(tempYi-y[i+2])>eps);
-                cout<<"\tx["<<i+2<<"] = "<<x[i+2]<<"            ";
-                cout<<"y["<<i+2<<"] = "<<y[i+2]<<endl;
+                cout<<"\tx["<<i+2<<"] = "<<x[i+2]<<"\t\t\t\tX tochne = "<<sin(t[i+2])+1<<"\t\t\t\t";
+                cout<<"y["<<i+2<<"] = "<<y[i+2]<<"\t\t\t\tY tochne = "<<t[i+2]*t[i+2]<<"\t\t\t\t"<<endl;
          }
-         cout<<sin(t[i-1])+1;
-system("pause");
+//system("pause");
         return 0;
 }
-//---------------------------------------------------------------------------
