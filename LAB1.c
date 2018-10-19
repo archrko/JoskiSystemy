@@ -46,9 +46,11 @@ x[0] = 1;y[0] = 0;t[0]=0;
                         tempYi = y[i+2];
                         x[i+2] = x[i+1] + h/12*(5*f(tempXi,tempYi,t[i+2]) + 8*f(x[i+1],y[i+1],t[i+1]) - f(x[i+0],y[i+0],t[i+0]));
                         y[i+2] = y[i+1] + h/12*(5*g(tempXi,tempYi,t[i+2]) + 8*g(x[i+1],y[i+1],t[i+1]) - g(x[i+0],y[i+0],t[i+0]));
-                }while  (fabs(tempXi-x[i+2])+fabs(tempYi-y[i+2])>eps);
+                }while  (fabs(tempXi-x[i+2])+fabs(tempYi-y[i+2]) > eps);
                 cout<<"\tx["<<i+2<<"] = "<<x[i+2]<<"\t\t\t\tX tochne = "<<sin(t[i+2])+1<<"\t\t\t\t";
-                cout<<"y["<<i+2<<"] = "<<y[i+2]<<"\t\t\t\tY tochne = "<<t[i+2]*t[i+2]<<"\t\t\t\t"<<endl;
+                cout<<"y["<<i+2<<"] = "<<y[i+2]<<"\t\t\t\tY tochne = "<<t[i+2]*t[i+2]<<endl;
+                cout<<"Delta X ="<<fabs(x[i+2]-sin(t[i+2])-1)<<"\t Delta Y ="<<fabs(y[i+2]-t[i+2]*t[i+2])<<endl;
+             
          }
 //system("pause");
         return 0;
