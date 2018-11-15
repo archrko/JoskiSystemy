@@ -1,0 +1,9 @@
+for (int i = 0 ;i < NumOfDots; i++){
+		theta = i*3.14/50;
+		fi1 = 11*(cos(theta) - cos(2*theta));
+		fi2 = 11*(sin(theta) - sin(2*theta));
+		fi3 = 5*cos(2*theta) + 8*cos(theta) - 1;
+		fi4 = 5*sin(2*theta) + 8*sin(theta);
+		u = (fi1*fi3+fi2*fi4)/(fi3*fi3+fi4*fi4);
+		v = (fi2*fi3-fi1*fi4)/(fi3*fi3+fi4*fi4);
+	}
