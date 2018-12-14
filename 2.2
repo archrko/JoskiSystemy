@@ -1,0 +1,104 @@
+#include<string>
+#include<iomanip>
+#include<stdlib.h>
+#include<stdio.h>
+#include<math.h>
+#include <iostream>
+int main()
+{
+#pragma hdrstop
+  using namespace std;
+  //---------------------------------------------------------------------------
+  int i;
+  float Xh2, Yh2;
+
+  float  a,b,e,h,hmax,hmin,r, x0, y0, t0, X1, Y1, Xs, Ys, ts, z, n, t[20000], t1, stepx, stepy, K1, K2, xznay[20000], yznay[20000],tempx,tempy,rx,ry,xtoch[20000],ytoch[20000],riznx[20000],rizny[20000];
+  e = 0.0001;
+        r=20;
+        t1=(double)5/1001;
+        hmin=(double)t1/50;
+        hmax =(double)r*hmin;
+
+
+        h=hmin;
+        cout << hmax << endl;
+  n = (double)1 / hmax+48;
+  cout << n << endl;
+  t[0] = 0;
+  z = 1;
+        for(i=1;i<=n;i++)
+        {
+         if (t[i-1]>=t1)
+         {
+         h=hmax;
+}else z+=1;
+         t[i]=t[i-1]+h;
+        }
+  
+  
+  
+  
+  
+  
+  
+  for (i = 2; i <=n; i++)
+  {
+    stepx = (t[i] * t[i]) / 2;
+    stepy = -(t[i] * t[i]) / 2;
+                xtoch[i] = exp(stepx);
+    ytoch[i] = exp(stepy);
+}  //tochni
+xznay[0] = 1;
+  yznay[0] = 1;
+  for (i = 1; i < 4; i++)
+  {
+    K1 = t[i - 1] / yznay[i - 1];
+    K2 = t[i] / yznay[i - 1] + hmin * K1;
+    xznay[i] = xznay[i - 1] + hmin / 2 * (K1 + K2);
+    K1 = -1 * (t[i - 1] / xznay[i - 1]);
+    K2 = -1 * t[i] / xznay[i - 1] + hmin * K1;
+    yznay[i] = yznay[i - 1] + hmin / 2 * (K1 + K2);
+
+
+  }
+
+
+h=hmin;
+         //ciaoia?o ca yaii?
+      b=25;
+        for (i = 2; i <=n; i++)
+  {
+        xznay[i]=xznay[i-1];
+        yznay[i]=yznay[i-1];
+        do
+                {
+                if(i==z)h=hmax;
+                tempx=xznay[i];
+                tempy=yznay[i];
+        xznay[i] = xznay[i - 1]+h/12*(5*t[i] / tempy+8*t[i-1]/xznay[i-1]-t[i-2]/xznay[i-2]);
+        yznay[i] = yznay[i - 1]+h/12*(5*(-1)*t[i] / tempx+8*(-1)*t[i-1]/yznay[i-1]-(-1)*t[i-2]/yznay[i-2]);
+        }
+                while((fabs(tempx-xznay[i])+fabs(tempy-yznay[i]))>e);
+ };
+ for (i = 0; i <=n; i++)
+  {
+        riznx[i]=xtoch[i]-xznay[i];
+        rizny[i]=ytoch[i]-yznay[i];
+        }
+ for (i = 0; i <=n; i++)
+  {
+        if(i==z)
+        {
+          cout<<"Zmina kroku"<<endl;
+          cout<<"Zmina kroku"<<endl;
+          cout<<"Zmina kroku"<<endl;
+        }  
+                 std::cout << std::fixed << std::setprecision(5) ;
+    cout << "t-> " << t[i] <<setw(7)<< "\txtoch->" << xtoch[i] << "\t ytoch->" << ytoch[i]<< "\txznay->" << xznay[i] << " \tyznay->" << yznay[i] << endl;
+                std::cout << std::fixed << std::setprecision(10);
+                cout<< "\trizn->" << riznx[i] << " \trizny->" << rizny[i]<<endl ;
+
+}
+system("PAUSE");
+  return 0;
+}
